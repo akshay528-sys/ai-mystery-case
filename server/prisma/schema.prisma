@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  createdAt    DateTime      @default(now())
+
+  mysteryCases MysteryCase[]
+  caseAttempts CaseAttempt[]
+  interrogations Interrogation[]
+}
+
+model MysteryCase {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  difficulty  String
+  suspects    Json
+  clues       Json
+  solution    String
+  createdAt   DateTime @default(now())
+
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+
+  attempts CaseAttempt[]
+  interrogations Interrogation[]
+}
+
+model CaseAttempt {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  caseId      Int
+  suspect     String
+  correct     Boolean
+  score       Int
+  createdAt   DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  mysteryCase MysteryCase @relation(fields: [caseId], references: [id])
+}
+model Interrogation {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  caseId      Int
+  suspect     String
+  question    String
+  answer      String
+  createdAt   DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id])
+  mysteryCase MysteryCase @relation(fields: [caseId], references: [id])
+}
