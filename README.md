@@ -16,19 +16,19 @@ The application uses \*\*Groq AI\*\* to generate unique mystery scenarios and si
 
 ### 🔐 Login
 
-![Login Page](screenshots/lSSogin.png)
+![Login Page](./screenshots/login.png)
 
 ### 🕵️ Mystery Investigation
 
-![Mystery Case](screenshots/mystery-case.png)
+![Mystery Case](./screenshots/mystery-case.png)
 
 ### 💬 AI Suspect Interrogation
 
-![Suspect Interrogation](screenshots/interrogation.png)
+![Suspect Interrogation](./screenshots/interrogation.png)
 
 ### 📊 Detective Dashboard
 
-![Detective Dashboard](screenshots/dashboard.png)
+![Detective Dashboard](./screenshots/dashboard.png)
 
 ---
 
