@@ -16,7 +16,7 @@ The application uses \*\*Groq AI\*\* to generate unique mystery scenarios and si
 
 ### 🔐 Login
 
-![Login Page](screenshots/login.png)
+![Login Page](screenshots/lSSogin.png)
 
 ### 🕵️ Mystery Investigation
 
