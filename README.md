@@ -12,6 +12,25 @@ The application uses \*\*Groq AI\*\* to generate unique mystery scenarios and si
 
 \---
 
+## 📸 Screenshots
+
+### 🔐 Login
+
+![Login Page](screenshots/login.png)
+
+### 🕵️ Mystery Investigation
+
+![Mystery Case](screenshots/mystery-case.png)
+
+### 💬 AI Suspect Interrogation
+
+![Suspect Interrogation](screenshots/interrogation.png)
+
+### 📊 Detective Dashboard
+
+![Detective Dashboard](screenshots/dashboard.png)
+
+---
 
 
 \## 📌 Overview
