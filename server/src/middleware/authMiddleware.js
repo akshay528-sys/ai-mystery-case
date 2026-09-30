@@ -3,6 +3,12 @@ import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
     try {
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                message: "Authentication is not configured on the server"
+            });
+        }
+
         const authHeader = req.headers.authorization;
 
         // Check Authorization header

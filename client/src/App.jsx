@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import { AuthContext } from "./context/AuthContext";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -9,9 +11,22 @@ import Score from "./pages/Score";
 
 
 function App() {
+    const [token, setToken] = useState(() => localStorage.getItem("token"));
+
+    const signIn = (authToken) => {
+        localStorage.setItem("token", authToken);
+        setToken(authToken);
+    };
+
+    const signOut = () => {
+        localStorage.removeItem("token");
+        setToken(null);
+    };
+
     return (
-        <BrowserRouter>
-            <Routes>
+        <AuthContext.Provider value={{ token, signIn, signOut }}>
+            <BrowserRouter>
+                <Routes>
 
                 <Route path="/" element={<Login />} />
 
@@ -48,8 +63,9 @@ function App() {
                         </ProtectedRoute>
     }                 />    
 
-            </Routes>
-        </BrowserRouter>
+                </Routes>
+            </BrowserRouter>
+        </AuthContext.Provider>
     );
 }
 

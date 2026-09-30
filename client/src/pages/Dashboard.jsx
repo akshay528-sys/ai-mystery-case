@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 function Dashboard() {
     const navigate = useNavigate();
+    const { signOut } = useContext(AuthContext);
 
     const [user, setUser] = useState(null);
 
@@ -34,10 +36,9 @@ function Dashboard() {
         return <h2>Loading...</h2>;
     }
     const handleLogout = () => {
-    localStorage.removeItem("token");
-
-    window.location.href = "/";
-};
+        signOut();
+        navigate("/", { replace: true });
+    };
 
     return (
         <div>

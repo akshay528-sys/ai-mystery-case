@@ -1,0 +1,140 @@
+.auth-screen {
+    box-sizing: border-box;
+    min-height: 100vh;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background:
+        radial-gradient(circle at 15% 12%, rgba(207, 226, 218, 0.75), transparent 32%),
+        linear-gradient(135deg, #f4f6f3, #e9efeb);
+    color: #202a27;
+    text-align: left;
+}
+
+.auth-panel {
+    box-sizing: border-box;
+    width: min(100%, 440px);
+    padding: 36px;
+    border: 1px solid #dce5df;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 18px 48px rgba(32, 55, 44, 0.1);
+}
+
+.auth-eyebrow {
+    margin: 0 0 12px;
+    color: #547060;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.auth-title {
+    margin: 0;
+    color: #18231e;
+    font-size: 32px;
+    font-weight: 650;
+    letter-spacing: 0;
+    line-height: 1.2;
+}
+
+.auth-copy {
+    margin: 8px 0 24px;
+    color: #5c6a62;
+    font-size: 15px;
+}
+
+.auth-form {
+    display: grid;
+    gap: 10px;
+}
+
+.auth-form label {
+    margin-top: 4px;
+    color: #27352d;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-form input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #cbd7cf;
+    border-radius: 5px;
+    background: #fff;
+    color: #18231e;
+    font: inherit;
+    font-size: 15px;
+}
+
+.auth-form input:focus-visible {
+    outline: 3px solid rgba(75, 125, 94, 0.2);
+    border-color: #4b7d5e;
+}
+
+.auth-form button {
+    min-height: 46px;
+    margin-top: 10px;
+    border: 0;
+    border-radius: 5px;
+    background: #285b43;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 650;
+}
+
+.auth-form button:hover:not(:disabled) {
+    background: #1f4b36;
+}
+
+.auth-form button:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.auth-switch {
+    margin-top: 22px;
+    color: #5c6a62;
+    font-size: 14px;
+    text-align: center;
+}
+
+.auth-switch a {
+    color: #285b43;
+    font-weight: 650;
+}
+
+.auth-error,
+.auth-success {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.auth-error {
+    border: 1px solid #e6c6c3;
+    background: #fff5f3;
+    color: #8a3028;
+}
+
+.auth-success {
+    border: 1px solid #c8dfce;
+    background: #f1f8f2;
+    color: #285b43;
+}
+
+@media (max-width: 480px) {
+    .auth-screen {
+        padding: 16px;
+    }
+
+    .auth-panel {
+        padding: 28px 22px;
+    }
+}

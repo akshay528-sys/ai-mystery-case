@@ -1,9 +1,15 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import api from "../services/api";
+import "./Auth.css";
 
 function Login() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const { signIn } = useContext(AuthContext);
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
         email: "",
@@ -19,68 +25,80 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setIsSubmitting(true);
 
         try {
-            const response = await api.post(
+            const { data } = await api.post(
                 "/auth/login",
                 formData
             );
 
-            console.log("Login response:", response.data);
+            if (!data.token) {
+                throw new Error("The server did not return an authentication token.");
+            }
 
-            // Save JWT token
-            localStorage.setItem(
-                "token",
-                response.data.token
-            );
-
-            // Get logged-in user
-            const meResponse = await api.get("/auth/me");
-
-            console.log(
-                "Logged in user:",
-                meResponse.data.user
-            );
-
-            // Go to Case page after successful login
-            navigate("/case");
+            signIn(data.token);
+            navigate("/dashboard", { replace: true });
 
         } catch (error) {
-            console.error(
-                "Login failed:",
-                error.response?.data || error.message
+            setError(
+                error.response?.data?.message ||
+                error.message ||
+                "Unable to log in. Please try again."
             );
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <div>
-            <h1>Login</h1>
+        <main className="auth-screen">
+            <section className="auth-panel" aria-labelledby="login-title">
+                <p className="auth-eyebrow">AI Mystery Case</p>
+                <h1 className="auth-title" id="login-title">Login</h1>
+                <p className="auth-copy">Return to your investigation.</p>
 
-            <form onSubmit={handleSubmit}>
+                {location.state?.registered && (
+                    <p className="auth-success" role="status">
+                        Account created. You can now log in.
+                    </p>
+                )}
+                {error && <p className="auth-error" role="alert">{error}</p>}
 
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <label htmlFor="login-email">Email</label>
                 <input
+                    id="login-email"
                     name="email"
                     type="email"
-                    placeholder="Email"
+                    autoComplete="email"
+                    required
                     value={formData.email}
                     onChange={handleChange}
                 />
 
+                    <label htmlFor="login-password">Password</label>
                 <input
+                    id="login-password"
                     name="password"
                     type="password"
-                    placeholder="Password"
+                    autoComplete="current-password"
+                    required
                     value={formData.password}
                     onChange={handleChange}
                 />
 
-                <button type="submit">
-                    Login
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Logging in..." : "Login"}
                 </button>
+                </form>
 
-            </form>
-        </div>
+                <p className="auth-switch">
+                    Don&apos;t have an account? <Link to="/register">Register</Link>
+                </p>
+            </section>
+        </main>
     );
 }
 
