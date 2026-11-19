@@ -10,9 +10,9 @@ Create a separate Vercel project for this backend and connect it to the same Git
 - **Output Directory:** leave unset
 - **Node.js Version:** use a currently supported version (Vercel currently defaults to Node.js 26.x)
 
-Vercel recognizes `src/app.js` as the Express application entry point and forwards requests through the app's existing `/api` routes. No `api/index.js` or `vercel.json` rewrite is needed. The local listener in `src/server.js` remains for development.
+Vercel recognizes `src/app.js` as the Express application entry point and forwards requests through the app's existing `/api` routes. No `api/index.js` or routing rewrite is needed. The local listener in `src/server.js` remains for development.
 
-The `postinstall` script in `package.json` runs `prisma generate`. Set the backend environment variables before the first deployment: `prisma.config.ts` reads `DATABASE_URL` while loading Prisma configuration, including during generation. Client generation itself does not connect to PostgreSQL.
+The `postinstall` and `vercel-build` scripts in `package.json` run `prisma generate`, so the client is generated during installation and again before Vercel packages the function. `vercel.json` explicitly includes `src/generated/**` in the Express function bundle. Set the backend environment variables before the first deployment: `prisma.config.ts` reads `DATABASE_URL` while loading Prisma configuration, including during generation. Client generation itself does not connect to PostgreSQL.
 
 ## Backend environment variables
 
