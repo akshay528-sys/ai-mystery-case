@@ -1,1071 +1,565 @@
-\# 🕵️ AI Mystery Case
+# 🕵️ AI Mystery Case
 
+### An AI-powered interactive detective investigation platform
 
+Investigate crimes, analyze clues, interrogate suspects, and uncover the truth.
 
-An AI-powered interactive detective game where users investigate dynamically generated mystery cases, interrogate suspects, analyze clues, and solve crimes.
+**AI Mystery Case** is a full-stack AI-powered detective game that generates interactive mystery scenarios using Groq AI. Players investigate crime scenes, examine suspects and evidence, conduct natural-language interrogations, and identify the culprit through an accusation-based scoring system.
 
-
-
-The application uses \*\*Groq AI\*\* to generate unique mystery scenarios and simulate suspect interrogations, while \*\*PostgreSQL + Prisma\*\* stores users, cases, accusations, and interrogation history.
-
-
-
-\---
-
-## 📸 Screenshots
-
-### 🔐 Login
-
-![Login Page](./screenshots/login.png)
-
-### 🕵️ Mystery Investigation
-
-![Mystery Case](./screenshots/mystery-case.png)
-
-### 💬 AI Suspect Interrogation
-
-![Suspect Interrogation](./screenshots/interrogation.png)
-
-### 📊 Detective Dashboard
-
-![Detective Dashboard](./screenshots/dashboard.png)
+\<p align="center">   \<a href="[https://ai-mystery-case.vercel.app](https://ai-mystery-case.vercel.app)">\<strong>🌐 Live Demo\</strong>\</a> ·   \<a href="[https://github.com/akshay528-sys/ai-mystery-case](https://github.com/akshay528-sys/ai-mystery-case)">\<strong>📂 GitHub Repository\</strong>\</a> \</p>
 
 ---
 
+## 📸 Application Screenshots
 
-\## 📌 Overview
+### 🔐 Login Page
 
 
 
-AI Mystery Case is a full-stack web application designed to provide an interactive detective experience.
+### 🕵️ Mystery Investigation
 
 
 
-Users can:
+### 💬 AI Suspect Interrogation
 
 
 
-\- Generate AI-powered mystery cases
+### 📊 Detective Dashboard
 
-\- Investigate crime scenes
 
-\- Examine suspects and clues
 
-\- Interrogate suspects using natural-language questions
+---
 
-\- Receive AI-generated suspect responses
+## ✨ Key Features
 
-\- Accuse a suspect
+### 🤖 AI-Powered Mystery Generation
 
-\- Receive a score based on the accusation
+- Generates unique detective cases using Groq AI.
+- Each generated mystery contains:
+  - Mystery title
+  - Crime description
+  - Difficulty level
+  - Three suspects
+  - Five clues
+  - Hidden solution
+- Generated mysteries are validated and stored in PostgreSQL.
+- The actual solution remains on the backend and is not exposed to the frontend during case generation.
 
-\- View previous attempts and scores
+### 🕵️ Interactive Detective Investigation
 
-\- Track their detective performance through a dashboard
+- View detailed crime descriptions.
+- Examine suspects and their backgrounds.
+- Analyze clues and available evidence.
+- Investigate the case before making an accusation.
 
+### 💬 AI-Powered Suspect Interrogation
 
+Interrogate suspects using natural-language questions.
 
-\---
+The AI simulates suspect responses based on the mystery context.
 
+Suspects can:
 
+- Answer questions naturally.
+- Evade certain questions.
+- Provide partial information.
+- Mislead the detective.
+- Maintain consistency with the case context.
 
-\## ✨ Key Features
+Interrogation questions and responses are stored in PostgreSQL for authenticated users.
 
+### 🎯 Accusation and Scoring System
 
+Select a suspect and submit an accusation to solve the mystery.
 
-\### 🤖 AI Mystery Generation
+| Result             |      Score |
+| ------------------ | ---------: |
+| Correct accusation | 100 points |
+| Wrong accusation   |   0 points |
 
+- Prevents duplicate accusations for the same case.
+- Stores accusation results and scores.
+- Maintains user-specific investigation history.
 
+### 📊 Detective Dashboard
 
-\- Generates unique detective cases using Groq AI
+The dashboard provides an overview of detective performance:
 
-\- Each case contains:
+- Total score
+- Total cases attempted
+- Cases solved
+- Wrong accusations
+- Investigation history
+- Attempt date and time
+- Selected suspect
+- Score for each attempt
 
-&#x20; - Mystery title
+### 🔐 Authentication and Authorization
 
-&#x20; - Crime description
+- User registration and login.
+- JWT-based authentication.
+- Password hashing using bcrypt.
+- Protected API routes.
+- User-specific attempt history.
+- User-specific interrogation history.
 
-&#x20; - Difficulty level
+---
 
-&#x20; - 3 suspects
+## 🏗️ System Architecture
 
-&#x20; - 5 clues
+The application follows a client-server architecture with AI integration and a PostgreSQL database.
 
-&#x20; - Hidden solution
+```mermaid
+flowchart TD
+    A[User] --> B[React + Vite Frontend]
+    B <-->|REST API / Axios| C[Node.js + Express Backend]
 
+    C --> D[JWT Authentication]
+    C --> E[Prisma ORM]
+    C --> F[Groq AI API]
 
+    E <--> G[(Neon PostgreSQL)]
 
-\### 🕵️ Detective Investigation
-
-
-
-\- View detailed mystery information
-
-\- Examine suspects and their backgrounds
-
-\- Analyze clues before making an accusation
-
-
-
-\### 💬 AI Suspect Interrogation
-
-
-
-\- Ask suspects questions using natural language
-
-\- Receive AI-generated responses
-
-\- Suspects can:
-
-&#x20; - Answer questions
-
-&#x20; - Evade questions
-
-&#x20; - Provide partial information
-
-&#x20; - Mislead the detective
-
-\- Interrogation history is stored in the database
-
-
-
-\### 🎯 Accusation \& Scoring
-
-
-
-\- Select one suspect as the culprit
-
-\- Submit an accusation
-
-\- Correct accusation → \*\*100 points\*\*
-
-\- Wrong accusation → \*\*0 points\*\*
-
-\- Duplicate accusations for the same case are prevented
-
-
-
-\### 📊 Detective Dashboard
-
-
-
-The dashboard displays:
-
-
-
-\- Total score
-
-\- Total cases attempted
-
-\- Cases solved
-
-\- Wrong accusations
-
-\- Case history
-
-\- Attempt date and time
-
-\- Selected suspect
-
-\- Score for each attempt
-
-
-
-\### 🔐 Authentication
-
-
-
-\- User registration
-
-\- User login
-
-\- JWT-based authentication
-
-\- Protected API routes
-
-\- User-specific attempt and interrogation history
-
-
-
-\---
-
-
-
-\## 🏗️ System Architecture
-
-
-
-```text
-
-┌───────────────────────┐
-
-│     React Frontend    │
-
-│       Vite + CSS      │
-
-└───────────┬───────────┘
-
-&#x20;           │
-
-&#x20;           │ REST API
-
-&#x20;           ▼
-
-┌───────────────────────┐
-
-│   Node.js + Express   │
-
-│       Backend         │
-
-└───────────┬───────────┘
-
-&#x20;           │
-
-&#x20;     ┌─────┴─────┐
-
-&#x20;     │           │
-
-&#x20;     ▼           ▼
-
-┌───────────┐ ┌───────────────┐
-
-│ Groq AI   │ │ PostgreSQL    │
-
-│           │ │ + Prisma ORM  │
-
-└───────────┘ └───────────────┘
-
-
-
+    F --> C
+    C --> B
 ```
 
-\## 🛠️ Technology Stack
+### Application Workflow
 
+```mermaid
+flowchart TD
+    A[User Registration / Login]
+    B[JWT Authentication]
+    C[Generate AI Mystery]
+    D[Investigate Crime Scene]
+    E[Examine Suspects and Clues]
+    F[Interrogate Suspects]
+    G[Analyze Evidence]
+    H[Submit Accusation]
+    I[Calculate Score]
+    J[Save Attempt]
+    K[Detective Dashboard]
 
+    A --> B --> C --> D --> E --> F
+    F --> G --> H --> I --> J --> K
+```
 
-\### Frontend
+---
 
+## 🛠️ Technology Stack
 
+| Category        | Technologies                 |
+| --------------- | ---------------------------- |
+| Frontend        | React 19, Vite 8, JavaScript |
+| Routing         | React Router                 |
+| Styling         | CSS                          |
+| HTTP Client     | Axios                        |
+| Backend         | Node.js, Express.js 5        |
+| Database        | PostgreSQL, Neon             |
+| ORM             | Prisma 7                     |
+| Authentication  | JWT, bcrypt                  |
+| AI Integration  | Groq API, Groq SDK           |
+| AI Model        | `openai/gpt-oss-20b`         |
+| Deployment      | Vercel                       |
+| Version Control | Git, GitHub                  |
 
-\- React
+---
 
-\- Vite
-
-\- JavaScript
-
-\- CSS
-
-\- Axios
-
-\- React Router
-
-
-
-\### Backend
-
-
-
-\- Node.js
-
-\- Express.js
-
-\- JavaScript
-
-\- JWT Authentication
-
-
-
-\### Database
-
-
-
-\- PostgreSQL
-
-\- Neon PostgreSQL
-
-\- Prisma ORM
-
-
-
-\### AI
-
-
-
-\- Groq API
-
-\- Groq SDK
-
-\- `openai/gpt-oss-20b`
-
-
-
-\### Development Tools
-
-
-
-\- Git
-
-\- GitHub
-
-\- npm
-
-\- Nodemon
-
-\- VS Code
-
-
-
-\---
-
-
-
-\## 📁 Project Structure
-
-
+## 📁 Project Structure
 
 ```text
-
 ai-mystery-case/
-
 │
-
 ├── client/
-
+│   ├── public/
 │   ├── src/
-
-│   │   ├── pages/
-
-│   │   ├── services/
-
 │   │   ├── components/
-
-│   │   └── App.jsx
-
-│   │
-
-│   ├── package.json
-
-│   └── vite.config.js
-
-│
-
-├── server/
-
-│   ├── src/
-
-│   │   ├── controllers/
-
-│   │   ├── routes/
-
-│   │   ├── middleware/
-
+│   │   ├── pages/
 │   │   ├── services/
-
-│   │   ├── generated/
-
-│   │   └── server.js
-
+│   │   └── App.jsx
 │   │
-
-│   ├── prisma/
-
-│   │   └── schema.prisma
-
-│   │
-
-│   └── package.json
-
+│   ├── package.json
+│   ├── vite.config.js
+│   └── vercel.json
 │
-
-├── .gitignore
-
-├── README.md
-
+├── server/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
+│   │
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── lib/
+│   │   ├── generated/
+│   │   ├── app.js
+│   │   └── server.js
+│   │
+│   ├── package.json
+│   └── vercel.json
+│
+├── screenshots/
+│   ├── login.png
+│   ├── mystery-case.png
+│   ├── interrogation.png
+│   └── dashboard.png
+│
+├── prisma.config.ts
 ├── package.json
-
 ├── package-lock.json
-
-└── prisma.config.ts
-
+├── .gitignore
+└── README.md
 ```
 
+*This is a representative structure based on the project layout; verify filenames and directories against the current repository.*
 
+---
 
-\---
+## 🚀 Getting Started
 
+Follow these instructions to run the project locally.
 
+### Prerequisites
 
-\## 🚀 Getting Started
+- Node.js 24 or compatible supported Node.js version
+- npm
+- PostgreSQL database or Neon account
+- Groq API key
 
-
-
-\### 1. Clone the Repository
-
-
+### 1. Clone the repository
 
 ```bash
-
 git clone https://github.com/akshay528-sys/ai-mystery-case.git
 
 cd ai-mystery-case
-
 ```
 
-
-
-\### 2. Install Dependencies
-
-
+### 2. Install dependencies
 
 Install root dependencies:
 
-
-
 ```bash
-
 npm install
-
 ```
-
-
 
 Install backend dependencies:
 
-
-
 ```bash
-
 cd server
-
 npm install
-
 ```
-
-
 
 Install frontend dependencies:
 
-
-
 ```bash
-
 cd ../client
-
 npm install
-
 ```
 
-
-
-Return to the project root:
-
-
-
-```bash
-
-cd ..
-
-```
-
-
-
-\---
-
-
-
-\## 🔑 Environment Variables
-
-
+### 3. Configure environment variables
 
 Create a `.env` file inside the `server` directory.
 
-
-
 ```env
-
-DATABASE\_URL="your\_neon\_postgresql\_connection\_string"
-
-GROQ\_API\_KEY="your\_groq\_api\_key"
-
-JWT\_SECRET="your\_jwt\_secret"
-
+DATABASE_URL="your_postgresql_connection_string"
+GROQ_API_KEY="your_groq_api_key"
+JWT_SECRET="your_secure_jwt_secret"
 PORT=5000
-
+FRONTEND_URL="http://localhost:5173"
 ```
 
+Create a `.env` file inside the `client` directory.
 
+```env
+VITE_API_URL="http://localhost:5000/api"
+```
 
-Do not commit your `.env` file to GitHub.
+Never commit actual environment files or production credentials to GitHub.
 
-
-
-\---
-
-
-
-\## 🗄️ Database Setup
-
-
-
-The project uses PostgreSQL with Prisma ORM.
-
-
+### 4. Generate Prisma Client
 
 From the project root, run:
 
-
-
 ```bash
-
 npx prisma generate
-
 ```
 
+Ensure the Prisma CLI uses the project's configured Prisma schema and configuration.
 
-
-Apply the database migrations:
-
-
+For a fresh local database, apply the development migrations:
 
 ```bash
-
 npx prisma migrate dev
-
 ```
 
+For an existing production database, use the reviewed production migration workflow rather than development migrations.
 
+### 5. Start the backend
 
-\---
-
-
-
-\## ▶️ Running the Application
-
-
-
-\### Start the Backend
-
-
-
-Open Git Bash:
-
-
+Open a terminal:
 
 ```bash
-
-cd \~/OneDrive/Desktop/ai-mystery-case/server
-
+cd server
 npm run dev
-
 ```
 
-
-
-Backend runs on:
-
-
+Backend:
 
 ```text
-
 http://localhost:5000
-
 ```
 
+Health check:
 
+```text
+http://localhost:5000/api/health
+```
 
-\### Start the Frontend
+### 6. Start the frontend
 
-
-
-Open another Git Bash terminal:
-
-
+Open another terminal:
 
 ```bash
-
-cd \~/OneDrive/Desktop/ai-mystery-case/client
-
+cd client
 npm run dev
-
 ```
 
-
-
-Frontend runs on:
-
-
+Frontend:
 
 ```text
-
 http://localhost:5173
-
 ```
 
+---
 
+## 🔑 Environment Variables
 
-\---
+| Variable       | Description                               |
+| -------------- | ----------------------------------------- |
+| `DATABASE_URL` | PostgreSQL connection string              |
+| `GROQ_API_KEY` | Groq AI API key                           |
+| `JWT_SECRET`   | Secret used for JWT authentication        |
+| `PORT`         | Backend server port                       |
+| `FRONTEND_URL` | Allowed frontend origin for backend CORS  |
+| `VITE_API_URL` | Backend API base URL used by the frontend |
 
+**Security:** Keep credentials private. Do not expose database URLs, JWT secrets, or Groq API keys in frontend code or public repositories.
 
+---
 
-\## 🔄 Application Flow
+## 🗄️ Database Design
 
+The application uses PostgreSQL with Prisma ORM.
 
-
-```text
-
-User Registration
-
-&#x20;       ↓
-
-User Login
-
-&#x20;       ↓
-
-JWT Authentication
-
-&#x20;       ↓
-
-Generate AI Mystery
-
-&#x20;       ↓
-
-Investigate Case
-
-&#x20;       ↓
-
-Examine Suspects \& Clues
-
-&#x20;       ↓
-
-Interrogate Suspects
-
-&#x20;       ↓
-
-Analyze Responses
-
-&#x20;       ↓
-
-Select Suspect
-
-&#x20;       ↓
-
-Submit Accusation
-
-&#x20;       ↓
-
-Score Calculation
-
-&#x20;       ↓
-
-Save Attempt
-
-&#x20;       ↓
-
-Detective Dashboard
-
-```
-
-
-
-\---
-
-
-
-\## 🤖 AI Integration
-
-
-
-The application uses Groq AI for two major features.
-
-
-
-\### 1. Mystery Generation
-
-
-
-The AI generates:
-
-
-
-\- Crime scenario
-
-\- Suspects
-
-\- Clues
-
-\- Difficulty
-
-\- Solution
-
-
-
-The generated mystery is validated and stored in PostgreSQL.
-
-
-
-The actual solution is kept on the backend and is not sent to the frontend during case generation.
-
-
-
-\### 2. Suspect Interrogation
-
-
-
-Users can ask suspects questions during an investigation.
-
-
-
-The AI receives the mystery context and responds while roleplaying as the selected suspect.
-
-
-
-The system instructs the AI to:
-
-
-
-\- Stay in character
-
-\- Answer naturally
-
-\- Avoid directly revealing the solution
-
-\- Provide partial information
-
-\- Potentially evade or mislead the detective
-
-\- Maintain consistency with the case
-
-
-
-Interrogation questions and responses are stored for each authenticated user.
-
-
-
-\---
-
-
-
-\## 🗃️ Database Models
-
-
-
-\### User
-
-
+### User
 
 Stores registered user information.
 
-
-
 ```text
-
 User
-
 ├── id
-
 ├── name
-
 ├── email
-
 ├── password
-
 └── createdAt
-
 ```
 
+### MysteryCase
 
-
-\### MysteryCase
-
-
-
-Stores generated detective cases.
-
-
+Stores generated mystery cases.
 
 ```text
-
 MysteryCase
-
 ├── id
-
 ├── title
-
 ├── description
-
 ├── difficulty
-
 ├── suspects
-
 ├── clues
-
 ├── solution
-
 ├── createdAt
-
 └── createdById
-
 ```
 
-
-
-\### CaseAttempt
-
-
+### CaseAttempt
 
 Stores user accusations and scores.
 
-
-
 ```text
-
 CaseAttempt
-
 ├── id
-
 ├── userId
-
 ├── caseId
-
 ├── suspect
-
 ├── correct
-
 ├── score
-
 └── createdAt
-
 ```
 
-
-
-\### Interrogation
-
-
+### Interrogation
 
 Stores suspect interrogation history.
 
-
-
 ```text
-
 Interrogation
-
 ├── id
-
 ├── userId
-
 ├── caseId
-
 ├── suspect
-
 ├── question
-
 ├── answer
-
 └── createdAt
-
 ```
 
-\---
+---
 
+## 🤖 AI Integration
 
+Groq AI powers two major application features.
 
-\## 🔐 Security
+### 1. Mystery Generation
 
+The AI generates:
 
+- Crime scenarios
+- Suspect profiles
+- Evidence and clues
+- Difficulty levels
+- Hidden solutions
 
-The application implements several security measures:
+The generated mystery is validated and stored in PostgreSQL.
 
+The actual solution is retained on the backend and is not sent to the frontend during case generation.
 
+### 2. AI Suspect Interrogation
 
-\- JWT authentication
+During an investigation, users can ask suspects questions in natural language.
 
-\- Protected API endpoints
+The AI receives the mystery context and generates responses while roleplaying as the selected suspect.
 
-\- User-specific case attempt history
+The interrogation behavior is designed to:
 
-\- User-specific interrogation history
+- Stay in character.
+- Answer naturally.
+- Avoid directly revealing the solution.
+- Provide partial information.
+- Potentially evade or mislead the detective.
+- Maintain consistency with the case.
 
-\- Environment variables for sensitive credentials
+Interrogation questions and responses are stored for authenticated users.
 
-\- `.env` excluded from Git
+---
 
-\- Mystery solutions kept on the backend
+## 🔌 API Overview
 
-\- Duplicate accusation prevention
+The backend exposes REST API route groups:
 
+| Route         | Purpose                              |
+| ------------- | ------------------------------------ |
+| `/api/auth`   | User registration and authentication |
+| `/api/cases`  | Mystery case operations              |
+| `/api/health` | Backend health check                 |
 
+Authentication-protected operations require a valid JWT.
 
-\---
+---
 
+## 🔒 Security
 
+The application implements the following security measures:
 
-\## 🎯 Scoring System
+- JWT-based authentication.
+- Password hashing using bcrypt.
+- Protected API endpoints.
+- User-specific attempt history.
+- User-specific interrogation history.
+- Environment variables for sensitive credentials.
+- `.env` excluded from Git.
+- Mystery solutions kept on the backend.
+- Duplicate accusation prevention.
+- Backend CORS configuration for permitted frontend origins.
 
+---
 
+## 🌐 Live Deployment
 
-| Result | Score |
+The application is deployed using Vercel and Neon PostgreSQL.
 
-|---|---:|
+| Component  | Platform        |
+| ---------- | --------------- |
+| Frontend   | Vercel          |
+| Backend    | Vercel          |
+| Database   | Neon PostgreSQL |
+| AI Service | Groq API        |
 
-| Correct accusation | 100 |
+### Application Links
 
-| Wrong accusation | 0 |
+- **Live Application:** [https://ai-mystery-case.vercel.app](https://ai-mystery-case.vercel.app)
+- **Backend Health Check:** [https://ai-mystery-case-p1kz.vercel.app/api/health](https://ai-mystery-case-p1kz.vercel.app/api/health)
+- **GitHub Repository:** [https://github.com/akshay528-sys/ai-mystery-case](https://github.com/akshay528-sys/ai-mystery-case)
 
+---
 
+## 🎯 Project Highlights
 
-A user can submit only one accusation for a particular case.
+- Developed a full-stack AI-powered detective investigation application.
+- Integrated Groq AI for dynamic mystery generation and suspect interrogation.
+- Implemented JWT authentication and protected REST APIs.
+- Designed relational database models using PostgreSQL and Prisma.
+- Implemented accusation validation, scoring, and attempt history.
+- Protected hidden mystery solutions through backend-side handling.
+- Deployed frontend and backend independently using Vercel.
+- Integrated Neon PostgreSQL for cloud database storage.
 
+---
 
+## 🔮 Future Enhancements
 
-\---
+- Difficulty-based scoring.
+- Interactive hint system.
+- More complex branching investigations.
+- Evidence collection system.
+- Multiple endings.
+- Timed investigations.
+- Leaderboards and user rankings.
+- Voice-based suspect interrogation.
+- Advanced detective analytics.
 
+---
 
+## 📌 Project Status
 
-\## 🕵️ Detective Experience
+**Status: Deployed – Functional MVP**
 
+The current application includes:
 
+- User authentication.
+- AI mystery generation.
+- Mystery investigation.
+- AI suspect interrogation.
+- Accusation and scoring system.
+- Detective dashboard.
+- Attempt history.
+- PostgreSQL database integration.
+- Prisma ORM integration.
+- Production deployment.
 
-The application is designed around a complete investigation workflow:
+---
 
+## 👨‍💻 Author
 
+**Akshaykumar Karani**
 
-1\. Generate a mystery
+Computer Science Engineering | Full Stack Developer
 
-2\. Read the crime description
+- GitHub: [https://github.com/akshay528-sys](https://github.com/akshay528-sys)
+- Project: [https://github.com/akshay528-sys/ai-mystery-case](https://github.com/akshay528-sys/ai-mystery-case)
+- Live Demo: [https://ai-mystery-case.vercel.app](https://ai-mystery-case.vercel.app)
 
-3\. Examine suspects
+---
 
-4\. Analyze clues
+⭐ If you find this project interesting, consider giving the repository a star!
 
-5\. Interrogate suspects
-
-6\. Compare responses with available evidence
-
-7\. Select the suspected culprit
-
-8\. Submit the accusation
-
-9\. Receive the result and score
-
-10\. Review performance from the dashboard
-
-
-
-\---
-
-
-
-\## 🔮 Future Improvements
-
-
-
-\- Difficulty-based scoring
-
-\- Hint system
-
-\- More complex branching investigations
-
-\- Evidence collection system
-
-\- Multiple endings
-
-\- Timed investigations
-
-\- Leaderboards
-
-\- AI-generated crime scenes
-
-\- Voice-based suspect interrogation
-
-\- Advanced detective analytics
-
-\- Deployment with cloud infrastructure
-
-
-
-\---
-
-
-
-\## 📌 Project Status
-
-
-
-\*\*Status: Completed MVP\*\*
-
-
-
-The current version includes:
-
-
-
-\- User authentication
-
-\- AI mystery generation
-
-\- Mystery investigation
-
-\- AI suspect interrogation
-
-\- Accusation system
-
-\- Score calculation
-
-\- Attempt history
-
-\- Detective dashboard
-
-\- PostgreSQL database integration
-
-\- Prisma ORM integration
-
-\- GitHub version control
-
-
-
-\---
-
-
-
-\## 👨‍💻 Author
-
-
-
-\*\*Akshaykumar Karani\*\*
-
-
-
-Computer Science Engineering
-
-
-
-B.Tech / BE — VTU
-
-\---
-
-
-
-\## 🔗 Repository
-
-
-
-https://github.com/akshay528-sys/ai-mystery-case
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Built with React, Node.js, PostgreSQL, Prisma, and Groq AI.**
