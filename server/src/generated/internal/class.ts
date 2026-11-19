@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace.ts"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.10.0",
-  "engineVersion": "0edf323efd1d98336f3f0a68684b56f689b900d3",
+  "clientVersion": "7.10.1",
+  "engineVersion": "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../src/generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id        Int      @id @default(autoincrement())\n  name      String\n  email     String   @unique\n  password  String\n  createdAt DateTime @default(now())\n\n  mysteryCases   MysteryCase[]\n  caseAttempts   CaseAttempt[]\n  interrogations Interrogation[]\n}\n\nmodel MysteryCase {\n  id          Int      @id @default(autoincrement())\n  title       String\n  description String\n  difficulty  String\n  suspects    Json\n  clues       Json\n  solution    String\n  createdAt   DateTime @default(now())\n\n  createdById Int\n  createdBy   User @relation(fields: [createdById], references: [id])\n\n  attempts       CaseAttempt[]\n  interrogations Interrogation[]\n}\n\nmodel CaseAttempt {\n  id        Int      @id @default(autoincrement())\n  userId    Int\n  caseId    Int\n  suspect   String\n  correct   Boolean\n  score     Int\n  createdAt DateTime @default(now())\n\n  user        User        @relation(fields: [userId], references: [id])\n  mysteryCase MysteryCase @relation(fields: [caseId], references: [id])\n}\n\nmodel Interrogation {\n  id        Int      @id @default(autoincrement())\n  userId    Int\n  caseId    Int\n  suspect   String\n  question  String\n  answer    String\n  createdAt DateTime @default(now())\n\n  user        User        @relation(fields: [userId], references: [id])\n  mysteryCase MysteryCase @relation(fields: [caseId], references: [id])\n}\n",
   "runtimeDataModel": {
